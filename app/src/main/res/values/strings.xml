@@ -3,4 +3,5 @@
     <string name="title_home">Favorites</string>
     <string name="title_dashboard">Recents</string>
     <string name="title_notifications">Contacts</string>
+    <string name="dialer_title">about_title</string>
 </resources>
