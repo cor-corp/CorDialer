@@ -1,22 +1,20 @@
 package com.corcorp.cordialer;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.NoCopySpan;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
-
-public class DialerActivity extends Activity {
+public class Dialer extends Activity {
 
     Button btnOne;
     Button btnTwo;
@@ -35,9 +33,9 @@ public class DialerActivity extends Activity {
     EditText input;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        setContentView(R.layout.dialer_activity);
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_dialer);
 
         btnOne = findViewById(R.id.buttonOne);
         btnTwo = findViewById(R.id.buttonTwo);
@@ -55,7 +53,6 @@ public class DialerActivity extends Activity {
         btnDelete = findViewById(R.id.buttonDelete);
 
         input = findViewById(R.id.editText);
-
     }
 
     public void one(View v) {
@@ -151,8 +148,6 @@ public class DialerActivity extends Activity {
         inputNumber.setText(cache + number);
 
     }
-
-
 
 
 }
