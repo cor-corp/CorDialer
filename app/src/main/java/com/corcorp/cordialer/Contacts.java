@@ -11,11 +11,15 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Contacts extends AppCompatActivity  {
+    Button btnDelete;
+    EditText input;
     public TextView contacts;
 
     @Override
@@ -23,6 +27,9 @@ public class Contacts extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
         contacts = (TextView) findViewById(R.id.contact);
+        btnDelete = findViewById(R.id.buttonDelete);
+
+        input = findViewById(R.id.editText);
 
         getContacts();
 
@@ -111,5 +118,11 @@ public class Contacts extends AppCompatActivity  {
 
 
 
+
+
+    }
+
+    public void delete(View v) {
+        input.setText("");
     }
 }

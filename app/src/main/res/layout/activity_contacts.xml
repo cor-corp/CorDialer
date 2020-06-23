@@ -25,7 +25,7 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
-            android:layout_width="387dp"
+            android:layout_width="370dp"
             android:layout_height="wrap_content"
 
 
@@ -68,6 +68,37 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.893"
+            tools:ignore="OnClick" />
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="272dp"
+            android:layout_height="57dp"
+            android:backgroundTint="@android:color/transparent"
+            android:ems="10"
+            android:hint="@string/hint"
+            android:inputType="textPersonName"
+
+            app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.307"
+            app:layout_constraintStart_toStartOf="@+id/toolbar"
+            app:layout_constraintTop_toTopOf="@+id/toolbar"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/buttonDelete"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/ic_close"
+            android:onClick="delete"
+            android:theme="@style/Widget.AppCompat.Button.Small"
+            app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+            app:layout_constraintEnd_toEndOf="@+id/toolbar"
+            app:layout_constraintHorizontal_bias="0.953"
+            app:layout_constraintStart_toStartOf="@+id/toolbar"
+            app:layout_constraintTop_toTopOf="@+id/toolbar"
             tools:ignore="OnClick" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

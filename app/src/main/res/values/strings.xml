@@ -16,4 +16,5 @@
     <string name="hint">Enter the number</string>
     <string name="X">X</string>
     <string name="dial">Dial</string>
+    <string name="x">X</string>
 </resources>
