@@ -13,6 +13,9 @@ import android.widget.EditText;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Favorites extends AppCompatActivity {
+
+
+
     Button btnDelete;
     EditText input;
 

@@ -3,15 +3,15 @@
     <item
         android:id="@+id/favorites"
         android:title="Favorites"
-        android:icon="@drawable/ic_home_black_24dp"/>
+        android:icon="@drawable/favorites2"/>
     <item
         android:id="@+id/recents"
         android:title="Recents"
-        android:icon="@drawable/ic_home_black_24dp"/>
+        android:icon="@drawable/recent2"/>
     <item
         android:id="@+id/contacts"
         android:title="Contacts"
-        android:icon="@drawable/ic_home_black_24dp"/>
+        android:icon="@drawable/contacts3"/>
 
 
 </menu>

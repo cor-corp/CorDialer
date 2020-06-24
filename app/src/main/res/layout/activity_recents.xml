@@ -49,18 +49,22 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.388" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/diealer_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
             android:layout_marginStart="332dp"
             android:layout_marginEnd="23dp"
+            android:background="@color/green"
             android:clickable="true"
             android:onClick="clickDialer"
-            android:src="@drawable/ic_home_black_24dp"
+            android:src="@drawable/dialpadwhitee"
+            app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -99,6 +103,20 @@
             app:layout_constraintStart_toStartOf="@+id/toolbar"
             app:layout_constraintTop_toTopOf="@+id/toolbar"
             tools:ignore="OnClick" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="26dp"
+            android:layout_height="23dp"
+            android:background="@drawable/mic"
+            android:onClick="clickMic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.851"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.049" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

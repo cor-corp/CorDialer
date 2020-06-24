@@ -131,4 +131,5 @@ public class Contacts extends AppCompatActivity {
         // устанавливаем для списка адаптер
         contactList.setAdapter(adapter);
     }
+
 }
