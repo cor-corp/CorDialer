@@ -2,65 +2,86 @@ package com.corcorp.cordialer;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class Contacts extends AppCompatActivity  {
+import java.util.ArrayList;
+
+public class Contacts extends AppCompatActivity {
+    private static final int REQUEST_CODE_READ_CONTACTS = 1;
+    private static boolean READ_CONTACTS_GRANTED = false;
     Button btnDelete;
     EditText input;
-    public TextView contacts;
+    ListView contactList;
+    ArrayList<String> contacts = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
-        contacts = (TextView) findViewById(R.id.contact);
+        contactList = (ListView) findViewById(R.id.contactList);
         btnDelete = findViewById(R.id.buttonDelete);
-
         input = findViewById(R.id.editText);
 
-        getContacts();
+
+        // получаем разрешения
+        int hasReadContactPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS);
+        // если устройство до API 23, устанавливаем разрешение
+        if (hasReadContactPermission == PackageManager.PERMISSION_GRANTED) {
+            READ_CONTACTS_GRANTED = true;
+        } else {
+            // вызываем диалоговое окно для установки разрешений
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_CODE_READ_CONTACTS);
+        }
+        // если разрешение установлено, загружаем контакты
+        if (READ_CONTACTS_GRANTED) {
+            loadContacts();
 
 
+            BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+            bottomNavigationView.setSelectedItemId(R.id.contacts);
+            bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                    switch (menuItem.getItemId()) {
+                        case R.id.favorites:
+                            startActivity(new Intent(getApplicationContext()
+                                    , Favorites.class));
+                            overridePendingTransition(0, 0);
+                            return true;
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+                        case R.id.recents:
+                            startActivity(new Intent(getApplicationContext()
+                                    , Recents.class));
+                            overridePendingTransition(0, 0);
+                            return true;
 
-        bottomNavigationView.setSelectedItemId(R.id.contacts);
-
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.favorites:
-                        startActivity(new Intent(getApplicationContext()
-                                , Favorites.class));
-                        overridePendingTransition(0, 0);
-                        return true;
-
-                    case R.id.recents:
-                        startActivity(new Intent(getApplicationContext()
-                                , Recents.class));
-                        overridePendingTransition(0, 0);
-                        return true;
-
-                    case R.id.contacts:
-                        return true;
+                        case R.id.contacts:
+                            return true;
+                    }
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
+        }
     }
 
     public void clickDialer(View view) {
@@ -70,59 +91,44 @@ public class Contacts extends AppCompatActivity  {
 
     }
 
-    public void getContacts(){
-        String phoneNumber = null;
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 
-        //Связываемся с контактными данными и берем с них значения id контакта, имени контакта и его номера:
-        Uri CONTENT_URI = ContactsContract.Contacts.CONTENT_URI;
-        String _ID = ContactsContract.Contacts._ID;
-        String DISPLAY_NAME = ContactsContract.Contacts.DISPLAY_NAME;
-        String HAS_PHONE_NUMBER = ContactsContract.Contacts.HAS_PHONE_NUMBER;
-
-        Uri PhoneCONTENT_URI = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
-        String Phone_CONTACT_ID = ContactsContract.CommonDataKinds.Phone.CONTACT_ID;
-        String NUMBER = ContactsContract.CommonDataKinds.Phone.NUMBER;
-
-        StringBuffer output = new StringBuffer();
-        ContentResolver contentResolver = getContentResolver();
-        Cursor cursor = contentResolver.query(CONTENT_URI, null,null, null, null);
-
-        //Запускаем цикл обработчик для каждого контакта:
-        if (cursor.getCount() > 0) {
-
-            //Если значение имени и номера контакта больше 0 (то есть они существуют) выбираем
-            //их значения в приложение привязываем с соответствующие поля "Имя" и "Номер":
-            while (cursor.moveToNext()) {
-                String contact_id = cursor.getString(cursor.getColumnIndex(_ID));
-                String name = cursor.getString(cursor.getColumnIndex(DISPLAY_NAME));
-                int hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(HAS_PHONE_NUMBER)));
-
-                //Получаем имя:
-                if (hasPhoneNumber > 0) {
-                    output.append("\n Имя: " + name);
-                    Cursor phoneCursor = contentResolver.query(PhoneCONTENT_URI, null,
-                            Phone_CONTACT_ID + " = ?", new String[]{contact_id}, null);
-
-                    //и соответствующий ему номер:
-                    while (phoneCursor.moveToNext()) {
-                        phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(NUMBER));
-                        output.append("\n Телефон: " + phoneNumber);
-                    }
+        switch (requestCode) {
+            case REQUEST_CODE_READ_CONTACTS:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    READ_CONTACTS_GRANTED = true;
                 }
-                output.append("\n");
-            }
-
-            //Полученные данные отображаем с созданном элементе TextView:
-            contacts.setText(output);
         }
-
-
-
-
-
+        if (READ_CONTACTS_GRANTED) {
+            loadContacts();
+        } else {
+            Toast.makeText(this, "Требуется установить разрешения", Toast.LENGTH_LONG).show();
+        }
     }
 
-    public void delete(View v) {
-        input.setText("");
+    private void loadContacts() {
+        ContentResolver contentResolver = getContentResolver();
+        Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI,null, null, null, null);
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+
+                // получаем каждый контакт
+                String contact = cursor.getString(
+                        cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME_PRIMARY));
+                String hasPhone = cursor.getString(
+                        cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
+                // добавляем контакт в список
+                contacts.add(contact);
+                contacts.add(hasPhone);
+            }
+            cursor.close();
+        }
+
+        // создаем адаптер
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, contacts);
+        // устанавливаем для списка адаптер
+        contactList.setAdapter(adapter);
     }
 }
