@@ -1,6 +1,7 @@
 package com.corcorp.cordialer;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -13,6 +14,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.speech.RecognizerIntent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -25,6 +27,7 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class Contacts extends AppCompatActivity {
     private static final int REQUEST_CODE_READ_CONTACTS = 1;
@@ -43,7 +46,7 @@ public class Contacts extends AppCompatActivity {
         input = findViewById(R.id.editText);
 
 
-        // получаем разрешения
+        // PERMISSION FOR CONTACTS
         int hasReadContactPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS);
         // если устройство до API 23, устанавливаем разрешение
         if (hasReadContactPermission == PackageManager.PERMISSION_GRANTED) {
@@ -55,6 +58,7 @@ public class Contacts extends AppCompatActivity {
         // если разрешение установлено, загружаем контакты
         if (READ_CONTACTS_GRANTED) {
             loadContacts();
+
 
 
             BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -87,8 +91,6 @@ public class Contacts extends AppCompatActivity {
     public void clickDialer(View view) {
         Intent intent = new Intent(Contacts.this, Dialer.class);
         startActivity(intent);
-
-
     }
 
     @Override
@@ -106,6 +108,8 @@ public class Contacts extends AppCompatActivity {
             Toast.makeText(this, "Требуется установить разрешения", Toast.LENGTH_LONG).show();
         }
     }
+
+    // CONTACTS DISPLAY
 
     private void loadContacts() {
         ContentResolver contentResolver = getContentResolver();
@@ -132,4 +136,32 @@ public class Contacts extends AppCompatActivity {
         contactList.setAdapter(adapter);
     }
 
+
+    private void init() {
+        input = findViewById(R.id.editText);
+    }
+
+
+    // SEARCHING WITH VOICE
+    public void clickMic(View view) {
+        Intent intent = new Intent (RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        startActivityForResult(intent, 10);
+    }
+
+    @Override
+    protected void onActivityResult (int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && data != null) {
+            switch (requestCode) {
+                case 10:
+                    ArrayList<String> text = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    input.setText(text.get(0));
+                    break;
+            }
+        }
+    }
 }
+
+

@@ -38,21 +38,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.025" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:text="Recents"
-            android:textSize="50sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.388" />
+
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/diealer_button"
@@ -106,7 +92,7 @@
 
         <Button
             android:id="@+id/button"
-            android:layout_width="26dp"
+            android:layout_width="22dp"
             android:layout_height="23dp"
             android:background="@drawable/mic"
             android:onClick="clickMic"
@@ -116,6 +102,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.049" />
+
+        <ListView
+            android:layout_width="409dp"
+            android:layout_height="528dp"
+            android:id="@+id/miss_call"
+            android:focusableInTouchMode="false"
+            android:isScrollContainer="false"
+            app:layout_constraintBottom_toBottomOf="@+id/bottom_navigation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -2,6 +2,7 @@ package com.corcorp.cordialer;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
@@ -9,12 +10,16 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 public class Dialer extends Activity {
+    private static final int REQUEST_CODE_CALL_PHONE = 1;
+    private static boolean CALL_PHONE_GRANTED = false;
+
 
     Button btnOne;
     Button btnTwo;
@@ -36,6 +41,11 @@ public class Dialer extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dialer);
+        EditText edtView=(EditText)findViewById(R.id.editText);
+        edtView.setInputType(0);
+
+
+
 
         btnOne = findViewById(R.id.buttonOne);
         btnTwo = findViewById(R.id.buttonTwo);
@@ -51,9 +61,19 @@ public class Dialer extends Activity {
         btnDigit = findViewById(R.id.buttonDigit);
         btnDial = findViewById(R.id.buttonDial);
         btnDelete = findViewById(R.id.buttonDelete);
-
         input = findViewById(R.id.editText);
+
+// PERMISSION FOR CALL_PHONE
+        int hasReadContactPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE);
+        // если устройство до API 23, устанавливаем разрешение
+        if (hasReadContactPermission == PackageManager.PERMISSION_GRANTED) {
+            CALL_PHONE_GRANTED = true;
+        } else {
+            // вызываем диалоговое окно для установки разрешений
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_CODE_CALL_PHONE);
+        }
     }
+
 
     public void one(View v) {
         oNButtonClick(btnOne, input, "1");
@@ -139,6 +159,7 @@ public class Dialer extends Activity {
             }else {
                 startActivity(intent);
             }
+
         }
     }
 
